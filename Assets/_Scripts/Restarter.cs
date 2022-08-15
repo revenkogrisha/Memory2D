@@ -5,6 +5,8 @@ public class Restarter : MonoBehaviour
 {
     public void Restart()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        var activeScene = SceneManager.GetActiveScene();
+        var index = activeScene.buildIndex;
+        SceneManager.LoadScene(index);
     }
 }
