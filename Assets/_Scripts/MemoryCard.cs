@@ -24,14 +24,18 @@ public class MemoryCard : MonoBehaviour
     {
         if (_cardBack.activeSelf)
         {
-            _cardChecker.CardWasTrieToRevealed(this);
+            _cardChecker.SetRevealedCard(this);
         }
     }
 
-    public void SetCard(int id, Sprite image) 
+    public void Setup(int id, Sprite image)
     {
         _id = id;
-        GetComponent<SpriteRenderer>().sprite = image;
+        var renderer = GetComponent<SpriteRenderer>();
+        if (renderer != null)
+            renderer.sprite = image;
+        else
+            throw new System.Exception("Renderer is null!");
     }
 
     public void Reveal()
