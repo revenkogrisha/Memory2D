@@ -2,54 +2,30 @@ using UnityEngine;
 
 public class CardGenerator : MonoBehaviour
 {
-    private const int _gridRows = 2;
-    private const int _gridCols = 4;
+    [SerializeField] private MemoryCard _cardPrefab;
+    [SerializeField] private CardSetup _setup;
     
-    [SerializeField] private MemoryCard _originalCard;
-    [SerializeField] private Sprite[] _images;
-
-    private readonly Vector2 _offset = new(2f, 2.5f);
-    private readonly int[] _numbers = { 0, 0, 1, 1, 2, 2, 3, 3 };
-
-    private MemoryCard _card;
-    private Vector2 _grid;
-
-    private Vector3 StartPos => _originalCard.transform.position;
+    public int GridRows { get; } = 2;
+    public int GridCols { get; } = 4;
+    public Vector3 StartPos => _cardPrefab.transform.position;
 
     private void Start()
     {
-        _numbers.ShuffleArray();
         GenerateCards();
     }
 
     public void GenerateCards()
     {
-        for (int i = 0; i < _gridCols; i++)
+        for (int i = 0; i < GridCols; i++)
         {
-            for (int j = 0; j < _gridRows; j++)
+            for (int j = 0; j < GridRows; j++)
             {
-                _grid = new(i, j);
-                _card = Instantiate(_originalCard);
+                var grid = new Vector2(i, j);
+                var card = Instantiate(_cardPrefab);
 
-                SetupCard();
-                SetCardPosition();
+                _setup.SetupCard(card, grid);
+                _setup.SetCardPosition(card, grid);
             }
         }
-    }
-
-    private void SetupCard()
-    {
-        int index = (int)_grid.y * _gridCols + (int)_grid.x;
-        int id = _numbers[index];
-
-        _card.SetCard(id, _images[id]);
-    }
-
-    private void SetCardPosition()
-    {
-        float posX = (_offset.x * _grid.x) + StartPos.x;
-        float posY = -(_offset.y * _grid.y) + StartPos.y;
-
-        _card.transform.position = new Vector3(posX, posY, StartPos.z);
     }
 }
