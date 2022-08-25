@@ -9,7 +9,7 @@ public class CardCoincidenceChecker : MonoBehaviour
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
 
-    public void CardWasTrieToRevealed(MemoryCard card)
+    public void SetRevealedCard(MemoryCard card)
     {
         _card = card;
 
