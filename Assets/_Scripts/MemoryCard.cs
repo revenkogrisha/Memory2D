@@ -7,13 +7,7 @@ public class MemoryCard : MonoBehaviour
 
     private int _id;
 
-    public int Id
-    {
-        get
-        {
-            return _id;
-        }
-    }
+    public int Id => _id;
 
     private void Awake()
     {
@@ -43,7 +37,7 @@ public class MemoryCard : MonoBehaviour
         _cardBack.SetActive(false);
     }
 
-    public void Unreveal()
+    public void Hide()
     {
         _cardBack.SetActive(true);
     }
