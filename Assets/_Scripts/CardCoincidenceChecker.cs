@@ -5,36 +5,36 @@ public class CardCoincidenceChecker : MonoBehaviour
 {
     [SerializeField] private Score _score;
 
-    private MemoryCard _card;
+    private MemoryCard _currentCard;
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
 
     public void SetRevealedCard(MemoryCard card)
     {
-        _card = card;
+        _currentCard = card;
 
         if (_firstRevealed == null)
         {
-            SetUpFirstCard();
+            SetFirstCard();
         }
         else if (_secondRevealed == null)
         {
-            SetUpSecondCard();
+            SetSecondCard();
+            StartCoroutine(CheckMatch());
+            ResetBothCards();
         }
     }
 
-    private void SetUpFirstCard()
+    private void SetFirstCard()
     {
-        _firstRevealed = _card;
-        _card.Reveal();
+        _firstRevealed = _currentCard;
+        _currentCard.Reveal();
     }
     
-    private void SetUpSecondCard()
+    private void SetSecondCard()
     {
-        _secondRevealed = _card;
-        _card.Reveal();
-
-        StartCoroutine(CheckMatch());
+        _secondRevealed = _currentCard;
+        _currentCard.Reveal();
     }
 
     private IEnumerator CheckMatch()
@@ -47,19 +47,17 @@ public class CardCoincidenceChecker : MonoBehaviour
         {
             yield return new WaitForSeconds(.5f);
 
-            UnrevealBothCards();
+            HideBothCards();
         }
-
-        UpdateBothCards();
     }
 
-    private void UnrevealBothCards()
+    private void HideBothCards()
     {
-        _firstRevealed.Unreveal();
-        _secondRevealed.Unreveal();
+        _firstRevealed.Hide();
+        _secondRevealed.Hide();
     }
 
-    private void UpdateBothCards()
+    private void ResetBothCards()
     {
         _firstRevealed = null;
         _secondRevealed = null;
