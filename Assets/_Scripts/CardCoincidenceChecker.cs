@@ -21,7 +21,6 @@ public class CardCoincidenceChecker : MonoBehaviour
         {
             SetSecondCard();
             StartCoroutine(CheckMatch());
-            ResetBothCards();
         }
     }
 
@@ -49,6 +48,8 @@ public class CardCoincidenceChecker : MonoBehaviour
 
             HideBothCards();
         }
+
+            ResetBothCards();
     }
 
     private void HideBothCards()
