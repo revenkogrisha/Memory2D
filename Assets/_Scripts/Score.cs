@@ -3,23 +3,20 @@ using UnityEngine;
 public class Score : MonoBehaviour
 {
     [SerializeField] private int _reward = 10;
-    [SerializeField] private TextMesh _scoreText;
+    [SerializeField] private ScoreView _scoreView;
 
     private int Amount = 0;
 
-    private void Start()
+    private void Awake()
     {
-        _scoreText.text = $"Score: {Amount}";
+        _scoreView.UpdateText(Amount);
     }
 
     public void Match()
     {
         Amount += _reward;
-        UpdateScoreText();
+        _scoreView.UpdateText(Amount);
     }
 
-    private void UpdateScoreText()
-    {
-        _scoreText.text = $"Score: {Amount}";
-    }
+    private void UpdateText() => _scoreView.UpdateText(Amount);
 }
