@@ -7,13 +7,7 @@ public class MemoryCard : MonoBehaviour
 
     private int _id;
 
-    public int Id
-    {
-        get
-        {
-            return _id;
-        }
-    }
+    public int Id => _id;
 
     private void Awake()
     {
@@ -24,14 +18,18 @@ public class MemoryCard : MonoBehaviour
     {
         if (_cardBack.activeSelf)
         {
-            _cardChecker.CardWasTrieToRevealed(this);
+            _cardChecker.SetRevealedCard(this);
         }
     }
 
-    public void SetCard(int id, Sprite image) 
+    public void Setup(int id, Sprite image)
     {
         _id = id;
-        GetComponent<SpriteRenderer>().sprite = image;
+        var renderer = GetComponent<SpriteRenderer>();
+        if (renderer != null)
+            renderer.sprite = image;
+        else
+            throw new System.Exception("Renderer is null!");
     }
 
     public void Reveal()
@@ -39,7 +37,7 @@ public class MemoryCard : MonoBehaviour
         _cardBack.SetActive(false);
     }
 
-    public void Unreveal()
+    public void Hide()
     {
         _cardBack.SetActive(true);
     }
