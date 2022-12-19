@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Restarter : MonoBehaviour
+public class RestartService : MonoBehaviour
 {
     public void Restart()
     {
