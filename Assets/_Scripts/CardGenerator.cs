@@ -3,22 +3,24 @@ using UnityEngine;
 public class CardGenerator : MonoBehaviour
 {
     [SerializeField] private MemoryCard _cardPrefab;
-    [SerializeField] private CardSetup _setup;
-    
-    public int GridRows { get; } = 2;
-    public int GridCols { get; } = 4;
-    public Vector3 StartPos => _cardPrefab.transform.position;
+    [SerializeField] Vector3 _startPosition;
+    [SerializeField] private Sprite[] _images;
 
-    private void Start()
+    private int _gridRows = 2;
+    private int _gridCols = 4;
+    private CardSetupService _setup;
+
+
+    private void Awake()
     {
-        GenerateCards();
+        _setup = new(_images, _startPosition, _gridCols);
     }
 
     public void GenerateCards()
     {
-        for (int i = 0; i < GridCols; i++)
+        for (int i = 0; i < _gridCols; i++)
         {
-            for (int j = 0; j < GridRows; j++)
+            for (int j = 0; j < _gridRows; j++)
             {
                 var grid = new Vector2(i, j);
                 var card = Instantiate(_cardPrefab);
