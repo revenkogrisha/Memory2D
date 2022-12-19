@@ -1,55 +1,58 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
 public class CardCoincidenceChecker : MonoBehaviour
 {
-    [SerializeField] private Score _score;
-
     private MemoryCard _currentCard;
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
+    private readonly float _hideDelay = 0.5f;
+
+    public event Action OnMatch;
 
     public void SetRevealedCard(MemoryCard card)
     {
-        _currentCard = card;
-
         if (_firstRevealed == null)
         {
-            SetFirstCard();
+            SetFirstCard(card);
         }
         else if (_secondRevealed == null)
         {
-            SetSecondCard();
+            SetSecondCard(card);
             StartCoroutine(CheckMatch());
         }
     }
 
-    private void SetFirstCard()
+    private void SetFirstCard(MemoryCard card)
     {
-        _firstRevealed = _currentCard;
+        _firstRevealed = card;
         _currentCard.Reveal();
     }
     
-    private void SetSecondCard()
+    private void SetSecondCard(MemoryCard card)
     {
-        _secondRevealed = _currentCard;
+        _secondRevealed = card;
         _currentCard.Reveal();
     }
 
     private IEnumerator CheckMatch()
     {
+        if (!_firstRevealed || !_secondRevealed)
+            throw new Exception("One of revealed cards is null!");
+
         if (_firstRevealed.Id == _secondRevealed.Id)
         {
-            _score.Match();
+            OnMatch?.Invoke();
         }
         else
         {
-            yield return new WaitForSeconds(.5f);
+            yield return new WaitForSeconds(_hideDelay);
 
             HideBothCards();
         }
 
-            ResetBothCards();
+        ResetBothCards();
     }
 
     private void HideBothCards()
