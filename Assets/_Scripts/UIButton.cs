@@ -6,9 +6,12 @@ public class UIButton : MonoBehaviour
 {
     [SerializeField] private GameObject _target;
     [SerializeField] private string _message;
+
     private Color _highlightColor = Color.cyan;
     private SpriteRenderer _sprite;
     private Transform _transform;
+
+    #region MonoBehaviour
 
     private void Awake()
     {
@@ -39,4 +42,6 @@ public class UIButton : MonoBehaviour
         _transform.localScale = Vector3.zero;
         _target.SendMessage(_message);
     }
+
+    #endregion
 }
