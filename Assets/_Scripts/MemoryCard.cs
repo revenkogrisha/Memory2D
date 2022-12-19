@@ -1,24 +1,21 @@
+using System;
 using UnityEngine;
 
 public class MemoryCard : MonoBehaviour
 {
     [SerializeField] private GameObject _cardBack;
-    [SerializeField] private CardCoincidenceChecker _cardChecker;
 
     private int _id;
 
     public int Id => _id;
 
-    private void Awake()
-    {
-        _cardChecker = FindObjectOfType<CardCoincidenceChecker>();
-    }
+    public event Action<MemoryCard> OnRevealed;
 
     private void OnMouseDown()
     {
         if (_cardBack.activeSelf)
         {
-            _cardChecker.SetRevealedCard(this);
+            OnRevealed?.Invoke(this);
         }
     }
 
@@ -26,10 +23,10 @@ public class MemoryCard : MonoBehaviour
     {
         _id = id;
         var renderer = GetComponent<SpriteRenderer>();
-        if (renderer != null)
-            renderer.sprite = image;
-        else
+        if (!renderer)
             throw new System.Exception("Renderer is null!");
+
+        renderer.sprite = image;
     }
 
     public void Reveal()
