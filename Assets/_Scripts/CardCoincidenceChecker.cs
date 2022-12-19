@@ -4,36 +4,46 @@ using UnityEngine;
 
 public class CardCoincidenceChecker : MonoBehaviour
 {
-    private MemoryCard _currentCard;
     private MemoryCard _firstRevealed;
     private MemoryCard _secondRevealed;
     private readonly float _hideDelay = 0.5f;
+    private MemoryCard[] _cards;
 
     public event Action OnMatch;
+
+    #region MonoBehaviour
+
+    public void OnDisable()
+    {
+        if (_cards != null)
+            foreach (var card in _cards)
+                card.OnRevealed -= SetRevealedCard;
+    }
+
+    #endregion
+
+    public void Init(MemoryCard[] cards)
+    {
+        foreach (var card in cards)
+            card.OnRevealed += SetRevealedCard;
+
+        _cards = cards;
+    }
 
     public void SetRevealedCard(MemoryCard card)
     {
         if (_firstRevealed == null)
         {
-            SetFirstCard(card);
+            _firstRevealed = card;
+            card.Reveal();
         }
         else if (_secondRevealed == null)
         {
-            SetSecondCard(card);
+            _secondRevealed = card;
+            card.Reveal();
+
             StartCoroutine(CheckMatch());
         }
-    }
-
-    private void SetFirstCard(MemoryCard card)
-    {
-        _firstRevealed = card;
-        _currentCard.Reveal();
-    }
-    
-    private void SetSecondCard(MemoryCard card)
-    {
-        _secondRevealed = card;
-        _currentCard.Reveal();
     }
 
     private IEnumerator CheckMatch()

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CardGenerator : MonoBehaviour
@@ -16,8 +17,9 @@ public class CardGenerator : MonoBehaviour
         _setup = new(_images, _startPosition, _gridCols);
     }
 
-    public void GenerateCards()
+    public MemoryCard[] GenerateCards()
     {
+        List<MemoryCard> cards = new();
         for (int i = 0; i < _gridCols; i++)
         {
             for (int j = 0; j < _gridRows; j++)
@@ -27,7 +29,11 @@ public class CardGenerator : MonoBehaviour
 
                 _setup.SetupCard(card, grid);
                 _setup.SetCardPosition(card, grid);
+
+                cards.Add(card);
             }
         }
+
+        return cards.ToArray();
     }
 }
